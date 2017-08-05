@@ -44,7 +44,7 @@
         enter a Username to restrict the results. </p>
         <h4>Username</h4>
       <div class="row">
-        <input [(ngModel)]="autor.name" [typeahead]="states" class="form-control" name="autorname" (keyup)="checkChanges()">
+        <input [(ngModel)]="autor.name" [typeahead]="states" class="form-control" name="autorname" (keyup)="checkChanges()" tooltip="Enter a Username which will get selected.">
       </div>
       <!-- Beginn der Entity Auswahl -->
       <div class="row">
@@ -85,11 +85,11 @@
         <div class="col-lg-6">
           <h3>Key Word</h3>
           <!--<pre class="card card-block card-header">Keyword: {{tweet.keyWord}}</pre>-->
-          <input [(ngModel)]="tweet.keyWord" [typeahead]="states" class="form-control" name="keyword" (keyup)="checkChanges()">
+          <input [(ngModel)]="tweet.keyWord" [typeahead]="states" class="form-control" name="keyword" (keyup)="checkChanges()" tooltip="Enter a Keyword which will get selected.">
         </div>
         <div class="col-lg-6">
           <h3>Verb</h3>
-          <input [(ngModel)]="tweet.verb" [typeahead]="states" class="form-control" name="verb" (keyup)="refreshNormalized()">
+          <input [(ngModel)]="tweet.verb" [typeahead]="states" class="form-control" name="verb" (keyup)="refreshNormalized()" tooltip="Enter a verb which will get selected.">
           <pre class="card card-block card-header">Verb (normalized): {{tweet.verbNormalized}}</pre>
         </div>
       </div>
@@ -97,7 +97,7 @@
         <div class="col-lg-6">
           <h3>Subject</h3>
           <!--<pre class="card card-block card-header">Subject: {{tweet.subject.word}}</pre>-->
-          <input [(ngModel)]="tweet.subject.word" [typeahead]="states" class="form-control" name="subject" (keyup)="checkChanges()">
+          <input [(ngModel)]="tweet.subject.word" [typeahead]="states" class="form-control" name="subject" (keyup)="checkChanges()" tooltip="Enter a subject which will get selected.">
           <!-- Beginn der Entity Auswahl -->
           <div class="container-fluid">
             <div class="row">
@@ -148,7 +148,7 @@
         </div>
         <div class="col-lg-6">
           <h3>Object</h3>
-          <input [(ngModel)]="tweet.object.word" [typeahead]="states" class="form-control" name="object" (keyup)="checkChanges()">
+          <input [(ngModel)]="tweet.object.word" [typeahead]="states" class="form-control" name="object" (keyup)="checkChanges()" tooltip="Enter a object which will get selected.">
           <!-- Beginn der Entity Auswahl -->
           <div class="container-fluid">
             <div class="row">
@@ -202,7 +202,7 @@
   </div>
   <div class="row">
     <h2>SPARQL Query</h2>
-    <pre class="pre-scrollable">
+    <pre class="pre-scrollable query">
     {{sparqlQuery}} 
   </pre>
   </div>
