@@ -41,7 +41,7 @@ export class FusekiService {
                  WHERE { ?accout a               twtr:` + type + `;
                                  twtr:entityName ?entityName.
                  }`;
-        return this.http.post(http://192.168.99.100:3030/tdb/query, 'query=' + query,
+        return this.http.post(this.serverUrl, 'query=' + query,
             options).toPromise().then(this.extractData).catch(this.handleError);
 
     }
@@ -50,7 +50,7 @@ export class FusekiService {
         let body = res.json();
         return body;
     }
-    
+
     private handleError(error: any): Promise<any> {
         console.log("LOL");
         console.error('An error occurred', error);
