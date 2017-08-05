@@ -1,20 +1,291 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAyNTAgMjUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNTAgMjUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojREQwMDMxO30NCgkuc3Qxe2ZpbGw6I0MzMDAyRjt9DQoJLnN0MntmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTI1LDMwIDEyNSwzMCAxMjUsMzAgMzEuOSw2My4yIDQ2LjEsMTg2LjMgMTI1LDIzMCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAJIi8+DQoJPHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xMjUsNTIuMUw2Ni44LDE4Mi42aDBoMjEuN2gwbDExLjctMjkuMmg0OS40bDExLjcsMjkuMmgwaDIxLjdoMEwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMQ0KCQlMMTI1LDUyLjF6IE0xNDIsMTM1LjRIMTA4bDE3LTQwLjlMMTQyLDEzNS40eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="http://angularjs.blogspot.com/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container-fluid">
+  <h1>Semantic Web Search - Hochschule München</h1>
+  {{words | json}}
+  <div class="row">
+    <div class="col-lg-3 section-grp">
+      <h2>Selection</h2>
+      <p>Insert a limit how many rows you want to recieve and select all the elements you want to see in the result table.</p>
+      <h4>Limit</h4>
+      <input [(ngModel)]="selection.limit" [typeahead]="states" class="form-control" name="limit" (keypress)="checkLimit($event)"
+        (keyup)="checkChanges()" tooltip="Insert the maximum number of rows which get selected." id="limit" />
+      <h4>Fields</h4>
+      <div class="btn-group-vertical btn-full">
+        <label class="btn btn-primary" [(ngModel)]="selection.autorName" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Twitter Username should be selected"
+          placement="right">Autor Name</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.autorId" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Twitter UserID should be selected"
+          placement="right">Autor ID</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.autorDescription" btnCheckbox (click)="checkChanges()" container="body"
+          tooltip="Choose this if the Twitter User description should be selected" placement="right">Autor Description</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.autorFollowerCount" btnCheckbox (click)="checkChanges()" container="body"
+          tooltip="Choose this if the amount of followers should be selected" placement="right">Autor Follower Count</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.autorEntity" btnCheckbox (click)="checkChanges()" container="body"
+          tooltip="Choose this if the Entity of the Twitter User should be selected" placement="right">Autor Entity</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.tweetText" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet text should be selected"
+          placement="right">Tweet Text</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.tweetId" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet ID should be selected"
+          placement="right">Tweet ID</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.subject" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet subject should be selected"
+          placement="right">Subject</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.subjectEntity" btnCheckbox (click)="checkChanges()" container="body"
+          tooltip="Choose this if the Entity of the Tweet subject should be selected" placement="right">Subject Entity</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.verb" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet verb should be selected"
+          placement="right">Verb</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.object" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet object should be selected"
+          placement="right">Object</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.objectEntity" btnCheckbox (click)="checkChanges()" container="body"
+          tooltip="Choose this if the Eitity of the Tweet object should be selected" placement="right">Object Entity</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.keyWord" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the keywords of the Tweet should be selected"
+          placement="right">Key Word</label>
+      </div>
 
+    </div>
+    <div class="col-lg-3 section-grp">
+      <h2>Author</h2>
+      <p>In this section you can control with information about the author of the tweet (Twitter User). If you want you can
+        enter a Username to restrict the results. </p>
+      <h4>Username</h4>
+      <!--<pre>Test: {{test | json }}
+</pre>
+      <div class="btn-group-vertical">
+        <label class="btn btn-primary" [(ngModel)]="test.a" btnCheckbox *ngIf="!test.a">Test A</label>
+        <label class="btn btn-primary" [(ngModel)]="test.b" btnCheckbox *ngIf="!test.b">Test B</label>
+      </div>
+      <div class="btn-group-vertical">
+        <label class="btn btn-primary" [(ngModel)]="test.a" btnCheckbox *ngIf="test.a">Test A</label>
+        <label class="btn btn-primary" [(ngModel)]="test.b" btnCheckbox *ngIf="test.b">Test b</label>
+      </div>
+
+      <pre class="card card-block card-header">Autorname: {{autor.name}}</pre>-->
+
+      <input [(ngModel)]="autor.name" [typeahead]="states" class="form-control" name="autorname" (keyup)="checkChanges()">
+      <!-- Beginn der Entity Auswahl -->
+      <div class="container-fluid">
+        <div class="col-lg-6">
+          <h4>Entity Not Included</h4>
+          <div class="btn-group-vertical btn-full">
+            <button type="button" class="btn btn-warning " *ngFor="let entity of autor.entityNameNotChosen" (click)="autorChose($event)"
+              value="{{entity}}">{{entity}}</button>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h4>Entity Included</h4>
+          <div class="btn-group-vertical btn-full">
+            <button type="button" class="btn btn-success " *ngFor="let entity of autor.entityNameChosen" (click)="autorChoseNot($event)"
+              value="{{entity}}">{{entity}}</button>
+          </div>
+          <div class="alert alert-danger" *ngIf="autor.entityNameChosen.length==0">
+            You must at least chose one Entity to run the query!
+          </div>
+        </div>
+      </div>
+      <!-- Ende der Entity Auswahl -->
+    </div>
+    <div class="col-lg-6 section-grp">
+      <h2>Tweet</h2>
+      <p>In this section you can control with information about the tweet.</p>
+      <div class="row">
+        <div class="col-lg-6">
+          <h3>Key Word</h3>
+          <!--<pre class="card card-block card-header">Keyword: {{tweet.keyWord}}</pre>-->
+          <input [(ngModel)]="tweet.keyWord" [typeahead]="states" class="form-control" name="keyword" (keyup)="checkChanges()">
+        </div>
+        <div class="col-lg-6">
+          <h3>Verb</h3>
+          <input [(ngModel)]="tweet.verb" [typeahead]="states" class="form-control" name="verb" (keyup)="refreshNormalized()">
+          <pre class="card card-block card-header">Verb (normalized): {{tweet.verbNormalized}}</pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <h3>Subject</h3>
+          <!--<pre class="card card-block card-header">Subject: {{tweet.subject.word}}</pre>-->
+          <input [(ngModel)]="tweet.subject.word" [typeahead]="states" class="form-control" name="subject" (keyup)="checkChanges()">
+          <!-- Beginn der Entity Auswahl -->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                <h4>Entity Not Included</h4>
+
+              </div>
+              <h4>Entity Included</h4>
+
+              <div class="col-lg-6">
+
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full">
+                  <button type="button" class="btn btn-warning " *ngFor="let noun of tweet.subject.nounNotChosen" (click)="subjectNounChose($event)"
+                    value="{{noun}}">{{noun}}</button>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full">
+                  <button type="button" class="btn btn-success " *ngFor="let noun of tweet.subject.nounChosen" (click)="subjectNounChoseNot($event)"
+                    value="{{noun}}">{{noun}}</button>
+                </div>
+                <div class="alert alert-danger" *ngIf="tweet.subject.nounChosen.length==0">
+                  You must at least chose one Entity to run the query!
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full" *ngIf="tweet.subject.nounChosen.indexOf('Proper Noun')>-1">
+                  <button type="button" class="btn btn-warning " *ngFor="let entity of tweet.subject.entityNameNotChosen" (click)="subjectEntityNameChose($event)"
+                    value="{{entity}}">{{entity}}</button>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full" *ngIf="tweet.subject.nounChosen.indexOf('Proper Noun')>-1">
+                  <button type="button" class="btn btn-success " *ngFor="let entity of tweet.subject.entityNameChosen" (click)="subjectEntityNameChoseNot($event)"
+                    value="{{entity}}">{{entity}}</button>
+                </div>
+                <div class="alert alert-danger" *ngIf="tweet.subject.entityNameChosen.length==0">
+                  You must at least chose one Entity to run the query!
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Ende der Entity Auswahl -->
+        </div>
+        <div class="col-lg-6">
+          <h3>Object</h3>
+
+          <input [(ngModel)]="tweet.object.word" [typeahead]="states" class="form-control" name="object" (keyup)="checkChanges()">
+          <!-- Beginn der Entity Auswahl -->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                <h4>Entity Not Included</h4>
+
+              </div>
+              <h4>Entity Included</h4>
+
+              <div class="col-lg-6">
+
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full">
+                  <button type="button" class="btn btn-warning " *ngFor="let noun of tweet.object.nounNotChosen" (click)="objectNounChose($event)"
+                    value="{{noun}}">{{noun}}</button>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full">
+                  <button type="button" class="btn btn-success " *ngFor="let noun of tweet.object.nounChosen" (click)="objectNounChoseNot($event)"
+                    value="{{noun}}">{{noun}}</button>
+                </div>
+                <div class="alert alert-danger" *ngIf="tweet.object.nounChosen.length==0">
+                  You must at least chose one Entity to run the query!
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full" *ngIf="tweet.object.nounChosen.indexOf('Proper Noun')>-1">
+                  <button type="button" class="btn btn-warning " *ngFor="let entity of tweet.object.entityNameNotChosen" (click)="objectEntityNameChose($event)"
+                    value="{{entity}}">{{entity}}</button>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="btn-group-vertical btn-full" *ngIf="tweet.object.nounChosen.indexOf('Proper Noun')>-1">
+                  <button type="button" class="btn btn-success " *ngFor="let entity of tweet.object.entityNameChosen" (click)="objectEntityNameChoseNot($event)"
+                    value="{{entity}}">{{entity}}</button>
+                </div>
+                <div class="alert alert-danger" *ngIf="tweet.object.entityNameChosen.length==0">
+                  You must at least chose one Entity to run the query!
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Ende der Entity Auswahl -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h2>SPARQL Query:</h2>
+    <pre class="pre-scrollable">
+    {{sparqlQuery}} 
+  </pre>
+  </div>
+  <div class="row">
+    <button type="button" class="btn-block btn btn-primary" (click)="sendSparql()">Send Query</button>
+  </div>
+  <div class="row">
+    <table class="table" *ngIf='tableData!==undefiened'>
+      <thead>
+        <tr>
+          <th *ngFor="let head of tableData.head.vars">
+            {{head}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of tableData.results.bindings">
+          <td *ngIf="tableData.head.vars.indexOf('autorID')>-1">{{row.autorID.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorName')>-1">{{row.autorName.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorDescription')>-1">{{row.autorDescription.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorFollowerCount')>-1">{{row.autorFollowerCount.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('tweetID')>-1">{{row.tweetID.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('tweetText')>-1">{{row.tweetText.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('subject')>-1">{{row.subject.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('subjectEntity')>-1">{{row.subjectEntity.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('verb')>-1">{{row.verb.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('object')>-1">{{row.object.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('objectEntity')>-1">{{row.objectEntity.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('keyWord')>-1">{{row.keyWord.value}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--    <table class="table">
+      <thead>
+            <tr>
+               <th *ngFor="let head of tableData.head.vars">
+                   {{head}}  
+                </th>
+            </tr>
+       </thead>
+       <tbody>
+          <tr *ngFor="let row of tableData.results.bindings">
+            
+              <td *ngFor="let head of tableData.head.vars">{{head}}</td>
+          </tr>
+       </tbody>
+      </table>
+    <table>
+      <tr>
+        <th *ngFor="let head of tableData.head.vars">{{head}}</th>
+      </tr>
+      <tr *ngFor="let binding of tableData.results.bindings">
+          <td *ngFor"let head of tableData.head.vars"> {{binding.{{head}}.value}}</td>
+      </tr>
+    </table>
+    {{tableData | json}}
+  </div>
+<table>
+       <thead>
+            <tr>
+               <th ng-repeat="var in table.head.vars">
+                   {{var}}  
+                </th>
+            </tr>
+       </thead>
+
+     <tbody >
+           <tr ng-repeat="row in table.results.bindings"> 
+                <td ng-repeat="(key,val) in row">{{val.value}}</td> 
+           </tr>
+    </tbody>
+</table>  -->
