@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FusekiService } from './services/fuseki.service';
 import { VerbNormalisationService } from './services/verbnormalisation.service';
-import { Word } from './word';
 import { OnInit } from '@angular/core';
 import { FusekiResult } from './entity';
 import { Complete } from './fuseki';
@@ -22,6 +21,9 @@ export class AppComponent implements OnInit {
   tableData: Complete[];
   // Saves the SPARQL Query
   sparqlQuery: string;
+  // Saves if the Submit Button is activated
+  submitActivated: boolean;
+  submitActivatedMessage: string;
 
   constructor(private fusekiService: FusekiService, private verbNormalisationService: VerbNormalisationService) {
     this.selection = {
@@ -64,6 +66,8 @@ export class AppComponent implements OnInit {
         word: '',
       }
     };
+    this.submitActivated = true;
+    this.submitActivatedMessage = '';
     this.sparqlQuery = '';
   }
   ngOnInit(): void {
@@ -118,7 +122,7 @@ export class AppComponent implements OnInit {
     arrayTo.push(value);
     arrayTo.sort();
     arrayFrom.sort();
-    this.updateSparqlQuery();
+    this.checkChanges();
   }
   autorChoseNot(event: any) {
     this.moveValueArray(this.autor.entityNameChosen, this.autor.entityNameNotChosen, event.target.value);
@@ -151,39 +155,94 @@ export class AppComponent implements OnInit {
     this.moveValueArray(this.tweet.object.entityNameNotChosen, this.tweet.object.entityNameChosen, event.target.value);
   }
 
-
-
-
-  /*loadObjectEntities() {
-    let results;
-    this.fusekiService.sendSparqlQuery(
-      `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-       PREFIX twtr: <http://example.org/> 
-       SELECT DISTINCT ?entityName
-       WHERE { ?accout a               twtr:Object;
-                       twtr:entityName ?entityName.
-       }`
-    ).subscribe(result => {
-      for (let binding of result.results.bindings) {
-        this.tweet.object.entityNameChosen.push(binding.entityName.value);
-      }
-    });
-  }*/
-
-  // QUELLE: https://stackoverflow.com/questions/37435529/angular2-proper-way-to-restrict-text-input-values-e-g-only-numbers
+  /*
+  * Checks that only Numbers get into the Limit field
+  * From: https://stackoverflow.com/questions/37435529/angular2-proper-way-to-restrict-text-input-values-e-g-only-numbers
+  */
   checkLimit(event: any) {
-    const pattern = /[0-9\ ]/;
+    const pattern = /[0-9]/;
     let inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
-      // invalid character, prevent input
       event.preventDefault();
     }
-
   }
 
+  /*
+  * Calls the VerbNormalisation Service to get the normalized Verb
+  */
+  refreshNormalized(): void {
+    this.tweet.verbNormalized = this.tweet.verb;
+    this.verbNormalisationService.getWords().then(word => {
+      for (let w of word) {
+        if (w.conjugation == this.tweet.verb || w.base == this.tweet.verb) {
+          console.log(w.base);
+          this.tweet.verbNormalized = w.base;
+          this.updateSparqlQuery();
+          return;
+        }
+      }
+    }
+    );
+  }
+
+  /*
+  * Checks if all conditions are fulfilled that the submit button is acitvated.
+  */
+  checkSubmit(){
+    if(this.autor.entityNameChosen.length == 0){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'You must at least chose one Author Entity!';
+      return;
+    }
+    if(this.tweet.subject.nounChosen.length == 0){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'You must at least chose one Subject Noun!';
+      return;
+    }
+    if(this.tweet.object.nounChosen.length == 0){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'You must at least chose one Object Noun!';
+      return;
+    }
+    if(this.tweet.subject.nounChosen.indexOf('Proper Noun') > -1 && this.tweet.subject.entityNameChosen.length ==0){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'You must at least chose one Subject Entity if Proper Noun is selected!'
+      return;
+    }
+    if(this.tweet.object.nounChosen.indexOf('Proper Noun') > -1 && this.tweet.object.entityNameChosen.length ==0){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'You must at least chose one Object Entity if Proper Noun is selected!'
+      return;
+    }
+    if(this.selection.autorDescription == false && this.selection.autorEntity == false && this.selection.autorFollowerCount == false &&
+        this.selection.autorId == false && this.selection.autorName == false && this.selection.keyWord == false && this.selection.object == false &&
+        this.selection.objectEntity == false && this.selection.subject == false && this.selection.subjectEntity == false &&
+        this.selection.tweetId == false){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'You must at least chose one field which get selected!'
+      return;
+    }
+    if(Number(this.selection.limit) <= 0){
+      this.submitActivated = false;
+      this.submitActivatedMessage = 'Limit must be greater then 0!'
+      return;
+    }
+    this.submitActivated = true;
+    this.submitActivatedMessage = '';
+    return;
+  }
+
+  /*
+  * Function gets called by GUI
+  */
   checkChanges() {
+    this.checkSubmit();
     this.updateSparqlQuery();
   }
+
+  /*
+  * Updates the SPARQL Query
+  */
   updateSparqlQuery() {
     this.sparqlQuery = `
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -384,31 +443,18 @@ OPTIONAL{
     }
     this.sparqlQuery += `
 }
-LIMIT ` + this.selection.limit;
+LIMIT ` + Number(this.selection.limit);
   }
 
-  refreshNormalized(): void {
-    this.tweet.verbNormalized = this.tweet.verb;
-    this.verbNormalisationService.getWords().then(word => {
-      for (let w of word) {
-        if (w.conjugation == this.tweet.verb || w.base == this.tweet.verb) {
-          console.log(w.base);
-          this.tweet.verbNormalized = w.base;
-          this.updateSparqlQuery();
-          return;
-        }
-      }
-    }
-    );
-  }
-
+  /*
+  * Calls the FusekiService to submit the Qery and get the Data
+  */
   sendSparql() {
     let results;
     this.fusekiService.sendSparqlQuery(this.sparqlQuery
     ).then(
       data => {
       this.tableData = data;
-        console.log(this.tableData);
       });
   }
 }

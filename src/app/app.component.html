@@ -37,44 +37,42 @@
         <label class="btn btn-primary" [(ngModel)]="selection.keyWord" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the keywords of the Tweet should be selected"
           placement="right">Key Word</label>
       </div>
-
     </div>
     <div class="col-lg-3 section-grp">
       <h2>Author</h2>
       <p>In this section you can control with information about the author of the tweet (Twitter User). If you want you can
         enter a Username to restrict the results. </p>
-      <h4>Username</h4>
-      <!--<pre>Test: {{test | json }}
-</pre>
-      <div class="btn-group-vertical">
-        <label class="btn btn-primary" [(ngModel)]="test.a" btnCheckbox *ngIf="!test.a">Test A</label>
-        <label class="btn btn-primary" [(ngModel)]="test.b" btnCheckbox *ngIf="!test.b">Test B</label>
+        <h4>Username</h4>
+      <div class="row">
+        <input [(ngModel)]="autor.name" [typeahead]="states" class="form-control" name="autorname" (keyup)="checkChanges()">
       </div>
-      <div class="btn-group-vertical">
-        <label class="btn btn-primary" [(ngModel)]="test.a" btnCheckbox *ngIf="test.a">Test A</label>
-        <label class="btn btn-primary" [(ngModel)]="test.b" btnCheckbox *ngIf="test.b">Test b</label>
-      </div>
-
-      <pre class="card card-block card-header">Autorname: {{autor.name}}</pre>-->
-
-      <input [(ngModel)]="autor.name" [typeahead]="states" class="form-control" name="autorname" (keyup)="checkChanges()">
       <!-- Beginn der Entity Auswahl -->
-      <div class="container-fluid">
-        <div class="col-lg-6">
-          <h4>Entity Not Included</h4>
-          <div class="btn-group-vertical btn-full">
-            <button type="button" class="btn btn-warning " *ngFor="let entity of autor.entityNameNotChosen" (click)="autorChose($event)"
-              value="{{entity}}">{{entity}}</button>
+      <div class="row">
+        <div class="container-fluid">
+          <div class="col-lg-6">
+            <h4>Entity Not Included</h4>
+          </div>
+          <div class="col-lg-6">
+            <h4>Entity Included</h4>
           </div>
         </div>
-        <div class="col-lg-6">
-          <h4>Entity Included</h4>
-          <div class="btn-group-vertical btn-full">
-            <button type="button" class="btn btn-success " *ngFor="let entity of autor.entityNameChosen" (click)="autorChoseNot($event)"
-              value="{{entity}}">{{entity}}</button>
+      </div>
+      <div class="row">
+        <div class="container-fluid">
+          <div class="col-lg-6">
+            <div class="btn-group-vertical btn-full">
+              <button type="button" class="btn btn-warning " *ngFor="let entity of autor.entityNameNotChosen" (click)="autorChose($event)"
+                value="{{entity}}">{{entity}}</button>
+            </div>
           </div>
-          <div class="alert alert-danger" *ngIf="autor.entityNameChosen.length==0">
-            You must at least chose one Entity to run the query!
+          <div class="col-lg-6">
+            <div class="btn-group-vertical btn-full">
+              <button type="button" class="btn btn-success " *ngFor="let entity of autor.entityNameChosen" (click)="autorChoseNot($event)"
+                value="{{entity}}">{{entity}}</button>
+            </div>
+            <div class="alert alert-danger" *ngIf="autor.entityNameChosen.length==0">
+              You must at least chose one Entity to run the query!
+            </div>
           </div>
         </div>
       </div>
@@ -105,14 +103,10 @@
             <div class="row">
               <div class="col-lg-6">
                 <h4>Entity Not Included</h4>
-
               </div>
-              <h4>Entity Included</h4>
-
               <div class="col-lg-6">
-
+                <h4>Entity Included</h4>
               </div>
-
             </div>
             <div class="row">
               <div class="col-lg-6">
@@ -154,21 +148,16 @@
         </div>
         <div class="col-lg-6">
           <h3>Object</h3>
-
           <input [(ngModel)]="tweet.object.word" [typeahead]="states" class="form-control" name="object" (keyup)="checkChanges()">
           <!-- Beginn der Entity Auswahl -->
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
                 <h4>Entity Not Included</h4>
-
               </div>
-              <h4>Entity Included</h4>
-
               <div class="col-lg-6">
-
+                <h4>Entity Included</h4>
               </div>
-
             </div>
             <div class="row">
               <div class="col-lg-6">
@@ -217,8 +206,9 @@
     {{sparqlQuery}} 
   </pre>
   </div>
-  <div class="row">
-    <button type="button" class="btn-block btn btn-primary" (click)="sendSparql()">Send Query</button>
+  <div class="row submit">
+    <button type="button" class="btn-block btn btn-primary" (click)="sendSparql()" [disabled]="!submitActivated">Send Query</button>
+    <div class="alert alert-danger" *ngIf="!submitActivated">{{submitActivatedMessage}}</div>
   </div>
   <div class="row" *ngIf='tableData!==undefiened'>
     <h2>Results</h2>
@@ -258,49 +248,14 @@
           <td *ngIf="tableData.head.vars.indexOf('objectEntity')>-1 && row.objectEntity == undefiened"></td>
           <td *ngIf="tableData.head.vars.indexOf('keyWord')>-1 && row.keyWord !== undefiened">{{row.keyWord.value}}</td>
           <td *ngIf="tableData.head.vars.indexOf('keyWord')>-1 && row.keyWord === undefiened"></td>
-
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<!--    <table class="table">
-      <thead>
-            <tr>
-               <th *ngFor="let head of tableData.head.vars">
-                   {{head}}  
-                </th>
-            </tr>
-       </thead>
-       <tbody>
-          <tr *ngFor="let row of tableData.results.bindings">
-            
-              <td *ngFor="let head of tableData.head.vars">{{head}}</td>
-          </tr>
-       </tbody>
-      </table>
-    <table>
-      <tr>
-        <th *ngFor="let head of tableData.head.vars">{{head}}</th>
-      </tr>
-      <tr *ngFor="let binding of tableData.results.bindings">
-          <td *ngFor"let head of tableData.head.vars"> {{binding.{{head}}.value}}</td>
-      </tr>
-    </table>
-    {{tableData | json}}
+  <div class="row footer">
+    <footer>
+      By Andreas Geyer & Ralph Offinger
+    </footer>
   </div>
-<table>
-       <thead>
-            <tr>
-               <th ng-repeat="var in table.head.vars">
-                   {{var}}  
-                </th>
-            </tr>
-       </thead>
+</div>
 
-     <tbody >
-           <tr ng-repeat="row in table.results.bindings"> 
-                <td ng-repeat="(key,val) in row">{{val.value}}</td> 
-           </tr>
-    </tbody>
-</table>  -->
