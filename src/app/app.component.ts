@@ -248,6 +248,8 @@ SELECT DISTINCT `;
       this.sparqlQuery += '?autorDescription ';
     } if (this.selection.autorFollowerCount) {
       this.sparqlQuery += '?autorFollowerCount ';
+    } if (this.selection.autorEntity) {
+      this.sparqlQuery += '?autorEntity ';
     } if (this.selection.tweetId) {
       this.sparqlQuery += '?tweetID ';
     } if (this.selection.tweetText) {
@@ -277,7 +279,7 @@ OPTIONAL{
 }.
   ?tweet      twtr:tweetText        ?tweetText;
               twtr:tweetID          ?tweetID;
-              twtr:contains         ?sop.
+              twtr:contains         ?pos.
 OPTIONAL{
   ?tweet      twtr:hasKeyword       ?keyWords.
   ?keyWords   rdfs:member           ?keyWord.

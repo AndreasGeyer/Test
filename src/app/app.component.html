@@ -10,20 +10,20 @@
         (keyup)="checkChanges()" tooltip="Insert the maximum number of rows which get selected." id="limit" />
       <h4>Fields</h4>
       <div class="btn-group-vertical btn-full">
-        <label class="btn btn-primary" [(ngModel)]="selection.autorName" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Twitter Username should be selected"
-          placement="right">Autor Name</label>
         <label class="btn btn-primary" [(ngModel)]="selection.autorId" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Twitter UserID should be selected"
           placement="right">Autor ID</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.autorName" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Twitter Username should be selected"
+          placement="right">Autor Name</label> 
         <label class="btn btn-primary" [(ngModel)]="selection.autorDescription" btnCheckbox (click)="checkChanges()" container="body"
           tooltip="Choose this if the Twitter User description should be selected" placement="right">Autor Description</label>
         <label class="btn btn-primary" [(ngModel)]="selection.autorFollowerCount" btnCheckbox (click)="checkChanges()" container="body"
           tooltip="Choose this if the amount of followers should be selected" placement="right">Autor Follower Count</label>
         <label class="btn btn-primary" [(ngModel)]="selection.autorEntity" btnCheckbox (click)="checkChanges()" container="body"
           tooltip="Choose this if the Entity of the Twitter User should be selected" placement="right">Autor Entity</label>
-        <label class="btn btn-primary" [(ngModel)]="selection.tweetText" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet text should be selected"
-          placement="right">Tweet Text</label>
         <label class="btn btn-primary" [(ngModel)]="selection.tweetId" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet ID should be selected"
           placement="right">Tweet ID</label>
+        <label class="btn btn-primary" [(ngModel)]="selection.tweetText" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet text should be selected"
+          placement="right">Tweet Text</label>
         <label class="btn btn-primary" [(ngModel)]="selection.subject" btnCheckbox (click)="checkChanges()" container="body" tooltip="Choose this if the Tweet subject should be selected"
           placement="right">Subject</label>
         <label class="btn btn-primary" [(ngModel)]="selection.subjectEntity" btnCheckbox (click)="checkChanges()" container="body"
@@ -212,7 +212,7 @@
     </div>
   </div>
   <div class="row">
-    <h2>SPARQL Query:</h2>
+    <h2>SPARQL Query</h2>
     <pre class="pre-scrollable">
     {{sparqlQuery}} 
   </pre>
@@ -220,8 +220,9 @@
   <div class="row">
     <button type="button" class="btn-block btn btn-primary" (click)="sendSparql()">Send Query</button>
   </div>
-  <div class="row">
-    <table class="table" *ngIf='tableData!==undefiened'>
+  <div class="row" *ngIf='tableData!==undefiened'>
+    <h2>Results</h2>
+    <table class="table" >
       <thead>
         <tr>
           <th *ngFor="let head of tableData.head.vars">
@@ -231,18 +232,32 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of tableData.results.bindings">
-          <td *ngIf="tableData.head.vars.indexOf('autorID')>-1">{{row.autorID.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('autorName')>-1">{{row.autorName.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('autorDescription')>-1">{{row.autorDescription.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('autorFollowerCount')>-1">{{row.autorFollowerCount.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('tweetID')>-1">{{row.tweetID.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('tweetText')>-1">{{row.tweetText.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('subject')>-1">{{row.subject.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('subjectEntity')>-1">{{row.subjectEntity.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('verb')>-1">{{row.verb.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('object')>-1">{{row.object.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('objectEntity')>-1">{{row.objectEntity.value}}</td>
-          <td *ngIf="tableData.head.vars.indexOf('keyWord')>-1">{{row.keyWord.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorID')>-1 && row.autorID !== undefiened">{{row.autorID.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorID')>-1 && row.autorID === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('autorName')>-1 && row.autorName !== undefiened">{{row.autorName.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorName')>-1 && row.autorName === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('autorDescription')>-1 && row.autorDescription !== undefiened">{{row.autorDescription.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorDescription')>-1 && row.autorDescription === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('autorFollowerCount')>-1 && row.autorFollowerCount !== undefiened">{{row.autorFollowerCount.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorFollowerCount')>-1 && row.autorFollowerCount === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('autorEntity')>-1 && row.autorEntity !== undefiened">{{row.autorEntity.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('autorEntity')>-1 && row.autorEntity === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('tweetID')>-1 && row.tweetID !== undefiened">{{row.tweetID.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('tweetID')>-1 && row.tweetID === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('tweetText')>-1 && row.tweetText !== undefiened">{{row.tweetText.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('tweetText')>-1 && row.tweetText === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('subject')>-1 && row.subject !== undefiened">{{row.subject.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('subject')>-1 && row.subject === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('subjectEntity')>-1 && row.subjectEntity !== undefiened">{{row.subjectEntity.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('subjectEntity')>-1 && row.subjectEntity === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('verb')>-1 && row.verb !== undefiened">{{row.verb.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('verb')>-1 && row.verb === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('object')>-1 && row.object !== undefiened">{{row.object.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('object')>-1 && row.object === undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('objectEntity')>-1 && row.objectEntity !== undefiened">{{row.objectEntity.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('objectEntity')>-1 && row.objectEntity == undefiened"></td>
+          <td *ngIf="tableData.head.vars.indexOf('keyWord')>-1 && row.keyWord !== undefiened">{{row.keyWord.value}}</td>
+          <td *ngIf="tableData.head.vars.indexOf('keyWord')>-1 && row.keyWord === undefiened"></td>
 
         </tr>
       </tbody>
