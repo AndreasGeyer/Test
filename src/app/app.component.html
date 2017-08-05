@@ -215,13 +215,15 @@
     <table class="table" >
       <thead>
         <tr>
+          <th>Nr.</th>
           <th *ngFor="let head of tableData.head.vars">
-            {{head}}
+            {{head| titlecase}}
           </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let row of tableData.results.bindings">
+          <td></td>
           <td *ngIf="tableData.head.vars.indexOf('autorID')>-1 && row.autorID !== undefiened">{{row.autorID.value}}</td>
           <td *ngIf="tableData.head.vars.indexOf('autorID')>-1 && row.autorID === undefiened"></td>
           <td *ngIf="tableData.head.vars.indexOf('autorName')>-1 && row.autorName !== undefiened">{{row.autorName.value}}</td>
